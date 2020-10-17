@@ -5,14 +5,23 @@ module.exports = function viewBuild() {
 		fs.mkdirSync(tmpDir);
 	}
 
-	const header_content = fs.readFileSync('views/index_header.html');
-	const footer_content = fs.readFileSync('views/index_footer.html');
+	let index_content = fs.readFileSync('views/index_header.html');
+	let style_content = fs.readFileSync('css/style.css');
 
-	// @TODO
+	for(const folder of fs.readdirSync('./modules/')) {
+		index_content += fs.readFileSync('./modules/' + folder + '/views/index.html');
 
-	const final_content = header_content + footer_content;
+		try {
+			style_content += '\n' + fs.readFileSync('./modules/' + folder + '/css/style.css');
+		} catch(e) {
+			// Do nothing
+		}
+	}
 
-	fs.writeFileSync(tmpDir + '/index.html', final_content);
+	index_content += fs.readFileSync('views/index_footer.html');
 
-	console.log('"index.html" build finished - ' + (Date.now() - original) + 'ms');
+	fs.writeFileSync(tmpDir + '/index.html', index_content);
+	fs.writeFileSync(tmpDir + '/style.css', style_content);
+
+	console.log('Build finished - ' + (Date.now() - original) + 'ms');
 };

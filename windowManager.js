@@ -47,6 +47,12 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 	return win;
 };
 
+global.createWindowFromModule = function(title, moduleName, documentURL, width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT, options={}) {
+	const tmpURL = documentURL.replaceAll('views/', 'tmp/' + moduleName + '_');
+
+	return createWindow(title, tmpURL, width, height, options);
+};
+
 global.closeWindow = function(title) {
 	window[title] = false;
 };

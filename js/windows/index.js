@@ -1,1 +1,0 @@
-currentWindow = 'index';

@@ -13,15 +13,24 @@ module.exports = function viewBuild() {
 		fs.mkdirSync(tmpDir);
 	}
 
-	let index_content = fs.readFileSync('views/index_header.html');
+	let sidebar_menu = '';
 	let style_content = fs.readFileSync('css/style.css');
+
+	const skel_header = fs.readFileSync('views/skel_header.html');
+	const skel_middle = fs.readFileSync('views/skel_middle.html');
+	const skel_footer = fs.readFileSync('views/skel_footer.html');
+
+	const outputViews = {
+		'index.html': ''
+	};
 
 	for(const moduleName of fs.readdirSync('./modules/')) {
 		const viewContent = fs.readFileSync('./modules/' + moduleName + '/views/index.html').toString();
-		index_content += transformFile(viewContent, moduleName);
+		outputViews['index.html'] += transformFile(viewContent, moduleName);
+		sidebar_menu += '<img src="../modules/' + moduleName + '/icon.svg" id="' + moduleName + '" class="menu-active" />';
 
 		try {
-			style_content += '\n' + fs.readFileSync('./modules/' + moduleName + '/css/style.css');
+			style_content += '\n\n' + fs.readFileSync('./modules/' + moduleName + '/css/style.css');
 		} catch(e) {
 			// Do nothing
 		}
@@ -32,13 +41,8 @@ module.exports = function viewBuild() {
 				continue;
 			}
 
-			let viewContent = fs.readFileSync(viewDir + viewName).toString();
-			viewContent = transformFile(viewContent, moduleName);
-			viewContent = '<script type="text/javascript" src="../js/main.js"></script><link rel="stylesheet" type="text/css" href="./style.css">' + viewContent;
-			fs.writeFileSync(
-				tmpDir + '/' + moduleName + '_' + viewName,
-				viewContent
-			);
+			outputViews[moduleName + '_' + viewName] = fs.readFileSync(viewDir + viewName).toString();
+			outputViews[moduleName + '_' + viewName] = transformFile(outputViews[moduleName + '_' + viewName], moduleName);
 		}
 
 		// Serverside
@@ -51,9 +55,18 @@ module.exports = function viewBuild() {
 		}
 	}
 
-	index_content += fs.readFileSync('views/index_footer.html');
+	outputViews['index.html'] += '<script type="text/javascript" src="../js/index.js"></script>';
 
-	fs.writeFileSync(tmpDir + '/index.html', index_content);
+	for(const viewName in outputViews) {
+		let file_content = skel_header;
+		file_content += sidebar_menu;
+		file_content += skel_middle;
+		file_content += outputViews[viewName];
+		file_content += skel_footer;
+
+		fs.writeFileSync(tmpDir + '/' + viewName, file_content);
+	}
+
 	fs.writeFileSync(tmpDir + '/style.css', style_content);
 
 	console.log('Build finished - ' + (Date.now() - original) + 'ms');

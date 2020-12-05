@@ -1,3 +1,4 @@
+const currentWindow = 'index';
 let colCount = 0;
 let colWidth = 0;
 const margin = 18;

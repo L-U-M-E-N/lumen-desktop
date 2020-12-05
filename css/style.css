@@ -7,109 +7,78 @@
 	box-sizing: border-box;
 }
 
-body {
-	background-color: #0F1C1F;
-	background-image: url('../img/background.jpg');
-	background-size: cover;
+html {
+	background: black;
+}
 
-	color: #F6FDFE;
-
-	font-family: 'OpenSans-Light';
-
-	margin: 0;
+html, body {
 	padding: 0;
-	padding-top: 1.5em;
+	margin: 0;
+}
 
-	min-height: 100%;
+body {
+	background: rgb(2,0,36);
+	background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(9,28,121,1) 33%, rgba(0,152,182,1) 100%);
+	height: 100vh;
+
+	color: #EEEEEE;
+	font-family: 'OpenSans-Light';
 }
 
 /**
- * Top Bar
- */
-#window-bar {
-	background: #142529;
-	
-	width: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	padding-bottom: 5px;
-    border-bottom: 1px outset #5BCDE9;
-}
-#window-title {
-	display: block;
-	-webkit-app-region: drag;
-
-	width: calc(100% - 3.5em);
-
-	padding: 0.2em 0.8em;
-
-	font-size: 0.9em;
-}
-#window-close-button {
-	display: block;
-
-	position: fixed;
-	top: 0;
-	right: 0;
-
-	width: 3.5em;
-    padding: 0.7em 0.2em 0.6em 0.2em;
-
-	text-align: center;
-
-	font-size: 0.7em;
-
-	z-index: 2;
-
-	cursor: pointer;
-
-	background: #142529;
-}
-#window-close-button:hover {
-	background: #E74C3C;
-}
-
-/**
- * Modules
+ * Home - modules system
  */
 .main {
-	display: flex;
-	flex-wrap: wrap;
+	position: relative;
+	width: calc(100% - 75px);
 }
 
-/* Create four equal columns that sits next to each other */
 .module {
-	flex: calc(25% - 32px);
-	max-width: calc(25% - 32px);
-
-	margin: 24px 16px;
-	padding: 16px;
-	background: hsl(191 34% 12% / 0.90);
-
+	position: absolute;
+	background: rgb(0,0,0,0.2);
+	padding: 0.5em 1em;
 	border-radius: 5px;
-
-	border: 1px solid #036881;
+	min-height: 1em; 
 }
 
-@media (max-width: 1150px) {
+@media (min-width: 1900px) {
 	.module {
-		flex: calc(50% - 32px);
-		max-width: calc(50% - 32px);
+		width: calc(25% - 34px);
 	}
 }
 
-@media (max-width: 600px) {
+@media (min-width: 1400px) and (max-width: 1899px) {
 	.module {
-		flex: calc(100% - 32px);
-		max-width: calc(100% - 32px);
+		width: calc(33% - 34px);
+	}
+}
+
+@media (max-width: 1399px) {
+	.module {
+		width: calc(50% - 34px);
 	}
 }
 
 .module-title {
-	color: #2EB9DC;
-	font-weight: bold;
-	font-size: 24px;
 	text-align: center;
-	margin-top: 0;
+}
+
+/**
+ * Sidebar
+ */
+.sidebar {
+	position: fixed;
+	top: 50%;
+	right: 0;
+
+	transform: translate(0, -50%);
+
+	width: 50px;
+
+	z-index: 1000;
+}
+.sidebar img {
+	display: block;
+	margin: 5px;
+	max-width: 100%;
 }

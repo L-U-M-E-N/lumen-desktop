@@ -12,13 +12,6 @@ window.addEventListener('load', () => {
 	});
 });
 
-const viewNames = {};
-
-window.addEventListener('beforeunload', () => {
-	remote.getGlobal('console').log('Closing ' + currentWindow);
-	remote.getGlobal('closeWindow')(viewNames[currentWindow]);
-});
-
 window.addEventListener('load', () => {
 	for(const img of document.querySelectorAll('.sidebar img')) {
 		let pageLink = '';

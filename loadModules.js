@@ -6,7 +6,7 @@ function transformFile(fileContent, moduleName) {
 	return fileContent;
 }
 
-module.exports = function viewBuild() {
+module.exports = function loadModules() {
 	const original = Date.now();
 
 	if (!fs.existsSync(tmpDir)){
@@ -48,6 +48,7 @@ module.exports = function viewBuild() {
 		// Serverside
 		try {
 			if (fs.existsSync('./modules/' + moduleName + '/main.js')) {
+				console.log('Loading ./modules/' + moduleName + '/main.js');
 				require('./modules/' + moduleName + '/main.js');
 			}
 		} catch(err) {

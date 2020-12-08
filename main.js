@@ -9,14 +9,12 @@ global.tmpDir = './tmp';
 
 // Local libs
 global.fileScanner = require('./fileScanner');
-global.viewBuild = require('./viewBuild');
+global.loadModules = require('./loadModules');
 
 require('./windowManager');
 
 // Build html file
-if(!fs.existsSync(tmpDir)){
-	viewBuild();
-}
+loadModules();
 
 // Init app
 function init() {

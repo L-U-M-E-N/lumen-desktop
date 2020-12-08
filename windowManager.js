@@ -21,7 +21,7 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 		height,
 		frame: externalURL,
 		autoHideMenuBar: externalURL,
-		//icon: './img/icon.png',
+		icon: __dirname + './img/icon.png',
 		webPreferences: {
 			nodeIntegration: true,
 			enableRemoteModule: true,

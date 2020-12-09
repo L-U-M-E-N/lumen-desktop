@@ -11,7 +11,7 @@
 		"electron": "^10.1.2",
 		"electron-packager": "^15.1.0"
 	},
-	"author": "Elanis (Axel Soupé)",
+	"author": "Axel \"Elanis\" Soupé",
 	"license": "MIT",
 	"dependencies": {}
 }

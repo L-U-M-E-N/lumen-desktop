@@ -76,6 +76,7 @@ body {
 	width: 50px;
 
 	z-index: 1000;
+	-webkit-app-region: drag;
 }
 .sidebar img {
 	display: block;

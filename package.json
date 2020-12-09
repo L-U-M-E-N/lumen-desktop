@@ -12,5 +12,6 @@
 		"electron-packager": "^15.1.0"
 	},
 	"author": "Elanis (Axel Soupé)",
-	"license": "ISC"
+	"license": "MIT",
+	"dependencies": {}
 }

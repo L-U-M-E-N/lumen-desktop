@@ -71,14 +71,20 @@ body {
 	top: 50%;
 	right: 0;
 
+	padding: 50vh 0;
+
 	transform: translate(0, -50%);
 
 	width: 50px;
 
 	z-index: 1000;
+
+	-webkit-app-region: drag;
 }
 .sidebar img {
 	display: block;
 	margin: 5px;
 	max-width: 100%;
+
+	-webkit-app-region: no-drag;
 }

@@ -1,3 +1,5 @@
+global.modulesMetaData = {};
+
 function transformFile(fileContent, moduleName) {
 	fileContent = fileContent.replaceAll('src="../js/', 'src="../modules/' + moduleName + '/js/');
 	fileContent = fileContent.replaceAll('src="../img/', 'src="../modules/' + moduleName + '/img/');
@@ -25,9 +27,19 @@ module.exports = function loadModules() {
 	};
 
 	for(const moduleName of fs.readdirSync('./modules/')) {
-		const viewContent = fs.readFileSync('./modules/' + moduleName + '/views/index.html').toString();
-		outputViews['index.html'] += transformFile(viewContent, moduleName);
-		sidebar_menu += '<img src="../modules/' + moduleName + '/icon.svg" id="' + moduleName + '" class="menu-active" />';
+
+		// Load config
+		modulesMetaData[moduleName] = JSON.parse(fs.readFileSync('./modules/' + moduleName + '/module.json'));
+
+		// Client
+		if(modulesMetaData[moduleName].desktop.module) {
+			const viewContent = fs.readFileSync('./modules/' + moduleName + '/views/index.html').toString();
+			outputViews['index.html'] += transformFile(viewContent, moduleName);
+		}
+
+		if(modulesMetaData[moduleName].desktop.window) {
+			sidebar_menu += '<img src="../modules/' + moduleName + '/icon.svg" id="' + moduleName + '" class="menu-active" />';
+		}
 
 		try {
 			style_content += '\n\n' + fs.readFileSync('./modules/' + moduleName + '/css/style.css');

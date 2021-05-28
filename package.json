@@ -8,7 +8,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"devDependencies": {
-		"electron": "^10.2.0",
+		"electron": "^10.4.7",
 		"electron-packager": "^15.1.0"
 	},
 	"author": "Axel \"Elanis\" Soupé",

@@ -8,6 +8,7 @@ global.fs = require('fs');
 global.tmpDir = './tmp';
 
 // Local libs
+global.AppDataManager = require('./js/AppDataManager')(app);
 global.fileScanner = require('./fileScanner');
 global.loadModules = require('./loadModules');
 

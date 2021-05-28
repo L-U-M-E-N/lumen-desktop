@@ -31,3 +31,5 @@ window.addEventListener('load', () => {
 		});
 	}
 });
+
+window.AppDataManager = require('../js/AppDataManager')(remote.getGlobal('app'));

@@ -25,6 +25,7 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 		webPreferences: {
 			nodeIntegration: true,
 			enableRemoteModule: true,
+			contextIsolation: false
 		},
 		title,
 	};

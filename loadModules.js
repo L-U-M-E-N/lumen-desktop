@@ -1,3 +1,5 @@
+const path = require('path');
+
 global.modulesMetaData = {};
 
 function transformFile(fileContent, moduleName) {
@@ -16,24 +18,24 @@ module.exports = function loadModules() {
 	}
 
 	let sidebar_menu = '';
-	let style_content = fs.readFileSync('css/style.css');
+	let style_content = fs.readFileSync(path.resolve(cssPath, 'style.css'));
 
-	const skel_header = fs.readFileSync('views/skel_header.html');
-	const skel_middle = fs.readFileSync('views/skel_middle.html');
-	const skel_footer = fs.readFileSync('views/skel_footer.html');
+	const skel_header = fs.readFileSync(path.resolve(viewsPath, 'skel_header.html'));
+	const skel_middle = fs.readFileSync(path.resolve(viewsPath, 'skel_middle.html'));
+	const skel_footer = fs.readFileSync(path.resolve(viewsPath, 'skel_footer.html'));
 
 	const outputViews = {
 		'index.html': ''
 	};
 
-	for(const moduleName of fs.readdirSync('./modules/')) {
+	for(const moduleName of fs.readdirSync(modulesPath)) {
 
 		// Load config
-		modulesMetaData[moduleName] = JSON.parse(fs.readFileSync('./modules/' + moduleName + '/module.json'));
+		modulesMetaData[moduleName] = JSON.parse(fs.readFileSync(path.resolve(modulesPath, moduleName, 'module.json')));
 
 		// Client
 		if(modulesMetaData[moduleName].desktop.module) {
-			const viewContent = fs.readFileSync('./modules/' + moduleName + '/views/index.html').toString();
+			const viewContent = fs.readFileSync(path.resolve(modulesPath, moduleName, 'views', 'index.html')).toString();
 			outputViews['index.html'] += transformFile(viewContent, moduleName);
 		}
 
@@ -42,26 +44,26 @@ module.exports = function loadModules() {
 		}
 
 		try {
-			style_content += '\n\n' + fs.readFileSync('./modules/' + moduleName + '/css/style.css');
+			style_content += '\n\n' + fs.readFileSync(path.resolve(modulesPath, moduleName, 'css', 'style.css'));
 		} catch(e) {
 			// Do nothing
 		}
 
-		const viewDir = './modules/' + moduleName + '/views/';
+		const viewDir = path.resolve(modulesPath, moduleName, 'views');
 		for(const viewName of fs.readdirSync(viewDir)) {
 			if(viewName === 'index.html') {
 				continue;
 			}
 
-			outputViews[moduleName + '_' + viewName] = fs.readFileSync(viewDir + viewName).toString();
+			outputViews[moduleName + '_' + viewName] = fs.readFileSync(path.resolve(viewDir, viewName)).toString();
 			outputViews[moduleName + '_' + viewName] = transformFile(outputViews[moduleName + '_' + viewName], moduleName);
 		}
 
 		// Serverside
 		try {
-			if (fs.existsSync('./modules/' + moduleName + '/main.js')) {
+			if (fs.existsSync(path.resolve(modulesPath, moduleName, 'main.js'))) {
 				console.log('Loading ./modules/' + moduleName + '/main.js');
-				require('./modules/' + moduleName + '/main.js');
+				require(path.resolve(modulesPath, moduleName, 'main.js'));
 			}
 		} catch(err) {
 			console.error(err);

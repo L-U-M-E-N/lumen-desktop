@@ -5,7 +5,12 @@ global.BrowserWindow = BrowserWindow;
 global.ipcMain = ipcMain;
 
 global.fs = require('fs');
-global.tmpDir = './tmp';
+const path = require('path');
+
+global.cssPath = path.resolve(app.getAppPath(), 'css');
+global.modulesPath = path.resolve(app.getAppPath(), 'modules');
+global.tmpDir = path.resolve(app.getAppPath(), 'tmp');
+global.viewsPath = path.resolve(app.getAppPath(), 'views');
 
 // Local libs
 global.AppDataManager = require('./js/AppDataManager')(app);

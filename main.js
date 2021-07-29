@@ -28,3 +28,7 @@ function init() {
 }
 
 app.on('ready', init);
+
+ipcMain.on('app-quit', () => {
+	app.quit();
+});

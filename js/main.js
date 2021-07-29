@@ -1,4 +1,5 @@
 const remote = require('electron').remote;
+const { app } = require('electron');
 
 window.addEventListener('load', () => {
 	document.addEventListener('keydown', (e) => {
@@ -19,7 +20,7 @@ window.addEventListener('load', () => {
 			pageLink = '/tmp/index.html';
 		} else if(img.id === 'exit') {
 			img.addEventListener('click', () => {
-				remote.getCurrentWindow().close();
+				ipcRenderer.send('app-quit');
 			});
 			return;
 		} else {

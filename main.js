@@ -13,7 +13,7 @@ global.tmpDir = path.resolve(app.getAppPath(), 'tmp');
 global.viewsPath = path.resolve(app.getAppPath(), 'views');
 
 // Local libs
-global.AppDataManager = require('./js/AppDataManager')(app);
+global.AppDataManager = require('./js/AppDataManager')(app.getAppPath());
 global.fileScanner = require('./fileScanner');
 global.loadModules = require('./loadModules');
 
@@ -31,4 +31,10 @@ app.on('ready', init);
 
 ipcMain.on('app-quit', () => {
 	app.quit();
+});
+ipcMain.on('toggleDevTools', () => {
+	BrowserWindow.getFocusedWindow().toggleDevTools();
+});
+ipcMain.handle('getAppPath', () => {
+	return app.getAppPath();
 });

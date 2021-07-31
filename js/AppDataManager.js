@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = (app) => {
-	const dataDirectory = path.resolve(app.getAppPath(), 'data');
+module.exports = (appPath) => {
+	const dataDirectory = path.resolve(appPath, 'data');
 	if (!fs.existsSync(dataDirectory)) {
 		fs.mkdirSync(dataDirectory);
 	}

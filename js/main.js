@@ -1,5 +1,4 @@
-const remote = require('electron').remote;
-const { app } = require('electron');
+window.ipcRenderer = require('electron').ipcRenderer;
 
 window.addEventListener('load', () => {
 	document.addEventListener('keydown', (e) => {
@@ -8,12 +7,10 @@ window.addEventListener('load', () => {
 		}
 
 		if (e.which === 123) { // F12
-			remote.getCurrentWindow().toggleDevTools();
+			ipcRenderer.send('toggleDevTools');
 		}
 	});
-});
 
-window.addEventListener('load', () => {
 	for(const img of document.querySelectorAll('.sidebar img')) {
 		let pageLink = '';
 		if(img.id === 'home') {
@@ -27,10 +24,14 @@ window.addEventListener('load', () => {
 			pageLink = '/tmp/' + img.id + '_' + img.id + '.html';
 		}
 
-		img.addEventListener('click', () => {
-			window.location.href = require('electron').remote.app.getAppPath() + pageLink;
+		img.addEventListener('click', async() => {
+			const appPath = await ipcRenderer.invoke('getAppPath');
+
+			window.location.href = appPath + pageLink;
 		});
 	}
 });
 
-window.AppDataManager = require('../js/AppDataManager')(remote.getGlobal('app'));
+(async() => {
+	window.AppDataManager = require('../js/AppDataManager')(await ipcRenderer.invoke('getAppPath'));
+})();

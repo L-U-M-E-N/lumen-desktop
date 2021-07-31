@@ -24,7 +24,6 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 		icon: __dirname + './img/icon.png',
 		webPreferences: {
 			nodeIntegration: true,
-			enableRemoteModule: true,
 			contextIsolation: false
 		},
 		title,

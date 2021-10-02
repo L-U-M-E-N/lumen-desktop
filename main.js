@@ -2,7 +2,7 @@
 import path from 'path';
 
 // Local libs
-import AppDataManager from './js/AppDataManager.js';
+import AppDataManagerFactory from './js/AppDataManager.js';
 import fileScanner from './fileScanner.js';
 import loadModules from './loadModules.js';
 
@@ -19,7 +19,7 @@ export const load = async(electron) => {
 	global.tmpDir = path.resolve(app.getAppPath(), 'tmp');
 	global.viewsPath = path.resolve(app.getAppPath(), 'views');
 
-	global.AppDataManager = AppDataManager(app.getAppPath());
+	global.AppDataManager = AppDataManagerFactory(app.getAppPath());
 	global.fileScanner = fileScanner;
 
 	// Build html file
@@ -38,5 +38,16 @@ export const load = async(electron) => {
 	});
 	ipcMain.handle('getAppPath', () => {
 		return app.getAppPath();
+	});
+
+	ipcMain.handle('AppDataManager-saveObject', (e, moduleName, dataName, objectData) => {
+		return AppDataManager.saveObject(moduleName, dataName, objectData);
+	});
+	ipcMain.handle('AppDataManager-loadObject', (e, moduleName, dataName,) => {
+		return AppDataManager.loadObject(moduleName, dataName);
+	});
+	ipcMain.handle('AppDataManager-exists', (e, moduleName, dataName) => {
+		console.log(moduleName, dataName);
+		return AppDataManager.exists(moduleName, dataName);
 	});
 };

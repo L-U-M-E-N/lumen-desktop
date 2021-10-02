@@ -33,5 +33,15 @@ window.addEventListener('load', () => {
 });
 
 (async() => {
-	window.AppDataManager = require('../js/AppDataManager')(await ipcRenderer.invoke('getAppPath'));
+	window.AppDataManager = class AppDataManager {
+		static async saveObject(moduleName, dataName, objectData) {
+			return await ipcRenderer.invoke('AppDataManager-saveObject', moduleName, dataName, objectData);
+		}
+		static async loadObject(moduleName, dataName) {
+			return await ipcRenderer.invoke('AppDataManager-loadObject', moduleName, dataName);
+		}
+		static async exists(moduleName, dataName) {
+			return await ipcRenderer.invoke('AppDataManager-exists', moduleName, dataName);
+		}
+	};
 })();

@@ -1,4 +1,5 @@
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 global.modulesMetaData = {};
 
@@ -10,7 +11,7 @@ function transformFile(fileContent, moduleName) {
 	return fileContent;
 }
 
-module.exports = function loadModules() {
+export default async function loadModules() {
 	const original = Date.now();
 
 	if (!fs.existsSync(tmpDir)){
@@ -63,7 +64,7 @@ module.exports = function loadModules() {
 		try {
 			if (fs.existsSync(path.resolve(modulesPath, moduleName, 'main.js'))) {
 				console.log('Loading ./modules/' + moduleName + '/main.js');
-				require(path.resolve(modulesPath, moduleName, 'main.js'));
+				await import('./modules/' + moduleName + '/main.js');
 			}
 		} catch(err) {
 			console.error(err);
@@ -85,4 +86,4 @@ module.exports = function loadModules() {
 	fs.writeFileSync(tmpDir + '/style.css', style_content);
 
 	console.log('Build finished - ' + (Date.now() - original) + 'ms');
-};
+}

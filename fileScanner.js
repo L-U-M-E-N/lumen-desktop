@@ -1,7 +1,7 @@
-let fs = require('fs');
-let path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-module.exports = function fileScanner(startPath,filter,callback) {
+export default function fileScanner(startPath,filter,callback) {
 	let regex = /(RECYCLE)/gi;
 	let regex2 = /(System\ Volume\ Information)/gi;
 

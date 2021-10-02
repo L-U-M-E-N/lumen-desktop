@@ -1,6 +1,8 @@
 const DEFAULT_WIDTH = 1366;
 const DEFAULT_HEIGHT = 768;
 
+import path from 'path';
+
 global.window = {
 	Music: false,
 	Pictures: false,
@@ -21,7 +23,7 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 		height,
 		frame: externalURL,
 		autoHideMenuBar: externalURL,
-		icon: __dirname + './img/icon.png',
+		icon: path.resolve('./img/icon.png'),
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false

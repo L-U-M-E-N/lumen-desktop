@@ -1,7 +1,8 @@
 {
 	"name": "lumen",
 	"version": "1.0.0",
-	"main": "main.js",
+	"main": "main.cjs",
+	"type": "module",
 	"scripts": {
 		"start": "electron .",
 		"build": "electron-packager \".\" \"Project L.U.M.E.N.\" --ignore=data/ -–asar --overwrite --platform=win32 --arch=x64 --icon=\"img/icon.png\" --out=\"build/\"",

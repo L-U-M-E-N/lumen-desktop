@@ -25,8 +25,9 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 		autoHideMenuBar: externalURL,
 		icon: path.resolve('./img/icon.png'),
 		webPreferences: {
+			backgroundThrottling: false,
+			contextIsolation: false,
 			nodeIntegration: true,
-			contextIsolation: false
 		},
 		title,
 	};

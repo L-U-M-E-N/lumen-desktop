@@ -44,4 +44,10 @@ window.addEventListener('load', () => {
 			return await ipcRenderer.invoke('AppDataManager-exists', moduleName, dataName);
 		}
 	};
+
+	window.ConfigManager = class ConfigManager {
+		static async get(moduleName, item) {
+			return await await ipcRenderer.invoke('ConfigManager-get', moduleName, item);
+		}
+	};
 })();

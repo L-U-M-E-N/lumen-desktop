@@ -37,6 +37,8 @@ export default async function loadModules() {
 		// Load config
 		modulesMetaData[moduleName] = JSON.parse(fs.readFileSync(path.resolve(modulesPath, moduleName, 'module.json')));
 
+		ConfigManager.buildMissingConfigItems(moduleName);
+
 		// Client
 		if(modulesMetaData[moduleName].desktop.module) {
 			const viewContent = fs.readFileSync(path.resolve(modulesPath, moduleName, 'views', 'index.html')).toString();

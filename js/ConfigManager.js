@@ -5,29 +5,28 @@ export default class ConfigManager {
 		} else {
 			ConfigManager.configurations = {};
 		}
+	}
 
-		console.log(modulesMetaData);
+	static buildMissingConfigItems(moduleName) {
+		if(!ConfigManager.configurations[moduleName]) {
+			ConfigManager.configurations[moduleName] = {};
+		}
 
-		for(const moduleName in modulesMetaData) {
-			if(!ConfigManager.configurations[moduleName]) {
-				ConfigManager.configurations[moduleName] = {};
-			}
-
-			for(const key in modulesMetaData[moduleName].config) {
-				if(!ConfigManager.configurations[moduleName][key]) {
-					switch(modulesMetaData[moduleName].config[key]) {
-						case 'object[]':
-						case 'string[]':
-							ConfigManager.configurations[moduleName][key] = [];
-							break;
-						default:
-							ConfigManager.configurations[moduleName][key] = null;
-					}
+		for(const key in modulesMetaData[moduleName].config) {
+			if(!ConfigManager.configurations[moduleName][key]) {
+				switch(modulesMetaData[moduleName].config[key]) {
+					case 'object[]':
+					case 'string[]':
+						ConfigManager.configurations[moduleName][key] = [];
+						break;
+					case 'object':
+						ConfigManager.configurations[moduleName][key] = {};
+						break;
+					default:
+						ConfigManager.configurations[moduleName][key] = null;
 				}
 			}
 		}
-
-		console.log(ConfigManager.configurations);
 	}
 
 	static get(moduleName, item) {

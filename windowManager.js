@@ -67,5 +67,5 @@ global.exitPopup = function() {
 		resizable: false,
 	};
 
-	createWindow('Confirmation de fermeture', 'views/exitPopup.html',300,150, options);
+	createWindow('Confirmation de fermeture', 'views/exitPopup.html', 300, 150, options);
 };

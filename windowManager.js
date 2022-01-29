@@ -27,8 +27,7 @@ global.createWindow = function(title, documentURL, width=DEFAULT_WIDTH, height=D
 		webPreferences: {
 			backgroundThrottling: false,
 			contextIsolation: false,
-			nodeIntegration: true,
-			nativeWindowOpen: true
+			nodeIntegration: true
 		},
 		title,
 	};

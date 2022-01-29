@@ -30,6 +30,9 @@ export default async function loadModules() {
 	};
 
 	for(const moduleName of fs.readdirSync(modulesPath)) {
+		if(!fs.statSync(path.resolve(modulesPath, moduleName)).isDirectory()) {
+			continue;
+		}
 
 		// Load config
 		modulesMetaData[moduleName] = JSON.parse(fs.readFileSync(path.resolve(modulesPath, moduleName, 'module.json')));

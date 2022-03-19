@@ -1,4 +1,5 @@
 // Npm libs
+import fs from 'fs';
 import path from 'path';
 
 // Local libs
@@ -8,6 +9,12 @@ import fileScanner from './fileScanner.js';
 import loadModules from './loadModules.js';
 
 import './windowManager.js';
+
+function getRandomName() {
+	const names = fs.readFileSync('random-names.txt', 'utf8').split('\n');
+
+	return names[Math.floor(Math.random() * (names.length - 1))];
+}
 
 export const load = async(electron) => {
 	const { app, BrowserWindow, ipcMain } = electron;
@@ -30,7 +37,7 @@ export const load = async(electron) => {
 	await loadModules();
 
 	// Init app
-	global.mainWindow = createWindow('Projet L.U.M.E.N - Learned United Machines of Elanis Network', tmpDir + '/index.html', 1920, 1080);
+	global.mainWindow = createWindow(`Projet L.U.M.E.N - ${getRandomName()}`, tmpDir + '/index.html', 1920, 1080);
 
 	app.on('ready', console.log);
 

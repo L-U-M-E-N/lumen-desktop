@@ -65,4 +65,14 @@ export const load = async(electron) => {
 	ipcMain.handle('ConfigManager-get', (e, moduleName, item) => {
 		return ConfigManager.get(moduleName, item);
 	});
+	ipcMain.handle('ConfigManager-getMetadata', (e, moduleName) => {
+		return ConfigManager.getMetadata(moduleName);
+	});
+	ipcMain.handle('ConfigManager-set', (e, moduleName, item, value) => {
+		return ConfigManager.set(moduleName, item, value);
+	});
+
+	ipcMain.handle('getModulesList', (e) => {
+		return Object.keys(modulesMetaData);
+	});
 };

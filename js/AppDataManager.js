@@ -16,7 +16,7 @@ export default (appPath) => {
 
 			fs.writeFileSync(
 				path.resolve(directory, dataName + '.json'),
-				JSON.stringify(objectData)
+				JSON.stringify(objectData, null, 4)
 			);
 		}
 

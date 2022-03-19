@@ -26,7 +26,8 @@ export default async function loadModules() {
 	const skel_footer = fs.readFileSync(path.resolve(viewsPath, 'skel_footer.html'));
 
 	const outputViews = {
-		'index.html': ''
+		'index.html': '',
+		'settings.html': fs.readFileSync(path.resolve(viewsPath, 'settings.html')),
 	};
 
 	for(const moduleName of fs.readdirSync(modulesPath)) {

@@ -89,3 +89,31 @@ body {
 
 	-webkit-app-region: no-drag;
 }
+
+/** Settings **/
+#settings-list {
+    overflow: auto;
+    max-height: 100vh;
+	padding: 1.5rem;
+}
+
+#settings-list label {
+    width: 120px;
+    display: inline-block;
+    padding-left: 1rem;
+    vertical-align: top;
+}
+
+#settings-list input[type="text"] {
+	display: inline-block;
+	padding-right: 5rem;
+}
+
+#settings-list input[type="button"] {
+	display: block;
+	margin-top: 1rem;
+}
+
+#settings-list textarea {
+	width: 75vw;
+}

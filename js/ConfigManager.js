@@ -40,4 +40,8 @@ export default class ConfigManager {
 
 		AppDataManager.saveObject('lumen_desktop', 'modules_config', ConfigManager.configurations);
 	}
+
+	static getMetadata(moduleName) {
+		return modulesMetaData[moduleName].config;
+	}
 }

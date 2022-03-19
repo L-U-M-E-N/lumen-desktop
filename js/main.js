@@ -15,6 +15,8 @@ window.addEventListener('load', () => {
 		let pageLink = '';
 		if(img.id === 'home') {
 			pageLink = '/tmp/index.html';
+		} else if(img.id === 'settings') {
+			pageLink = '/tmp/settings.html';
 		} else if(img.id === 'exit') {
 			img.addEventListener('click', () => {
 				ipcRenderer.send('app-quit');
@@ -47,7 +49,19 @@ window.addEventListener('load', () => {
 
 	window.ConfigManager = class ConfigManager {
 		static async get(moduleName, item) {
-			return await await ipcRenderer.invoke('ConfigManager-get', moduleName, item);
+			return await ipcRenderer.invoke('ConfigManager-get', moduleName, item);
 		}
+
+		static async getMetadata(moduleName) {
+			return await ipcRenderer.invoke('ConfigManager-getMetadata', moduleName);
+		}
+
+		static async set(moduleName, item, value) {
+			return await ipcRenderer.invoke('ConfigManager-set', moduleName, item, value);
+		}
+	};
+
+	window.getModulesList = async() => {
+		return await ipcRenderer.invoke('getModulesList');
 	};
 })();

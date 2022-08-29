@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"electron": "^18.0.3",
-		"electron-packager": "^15.4.0"
+		"electron-packager": "^16.0.0"
 	},
 	"author": "Axel \"Elanis\" Soupé",
 	"license": "MIT"

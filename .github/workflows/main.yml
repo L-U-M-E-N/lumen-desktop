@@ -24,9 +24,17 @@ jobs:
 
       - name: Build
         run: npx electron-packager "." "Project L.U.M.E.N." --ignore=data/ -–asar --overwrite --icon="img/icon.png" --out="build/"
-        
+      
+      - name: Zip built versions
+        run: |
+          cd build
+          for dir in */; do
+              ( cd "$dir" && zip -r ../"${dir%/}".zip . )
+          done
+        shell: bash
+
       - name: Upload artifacts to release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/*
+          files: build/*.zip

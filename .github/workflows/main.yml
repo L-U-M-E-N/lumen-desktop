@@ -29,7 +29,11 @@ jobs:
         run: |
           cd build
           for dir in */; do
+            if [ "$RUNNER_OS" = "Windows" ]; then
+              ( cd "$dir" && 7z a -tzip ../"${dir%/}".zip . )
+            else
               ( cd "$dir" && zip -r ../"${dir%/}".zip . )
+            fi
           done
         shell: bash
 

@@ -1,41 +1,48 @@
-import fs from 'fs';
 import path from 'path';
 
-export default (appPath) => {
-	const dataDirectory = path.resolve(appPath, 'data');
-	if (!fs.existsSync(dataDirectory)) {
-		fs.mkdirSync(dataDirectory);
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+
+export default async(appPath) => {
+	async function existsAsync(target) {
+		return await stat(target)
+			.then(() => true)
+			.catch(() => false);
 	}
 
-	return (class AppDataManager {
-		static saveObject(moduleName, dataName, objectData) {
-			const directory = path.resolve(dataDirectory, moduleName);
-			if (!fs.existsSync(directory)) {
-				fs.mkdirSync(directory);
-			}
+	async function makeDirectoryIfNotExists(dir) {
+		if (!(await existsAsync(dir))) {
+			await mkdir(dir);
+		}
+	}
 
-			fs.writeFileSync(
+	const dataDirectory = path.resolve(appPath, 'data');
+	await makeDirectoryIfNotExists(dataDirectory);
+
+	return (class AppDataManager {
+		static async saveObject(moduleName, dataName, objectData) {
+			const directory = path.resolve(dataDirectory, moduleName);
+			await makeDirectoryIfNotExists(directory);
+
+			await writeFile(
 				path.resolve(directory, dataName + '.json'),
 				JSON.stringify(objectData, null, 4)
 			);
 		}
 
-		static loadObject(moduleName, dataName) {
+		static async loadObject(moduleName, dataName) {
 			return JSON.parse(
-				fs.readFileSync(
+				await readFile(
 					path.resolve(dataDirectory, moduleName, dataName + '.json'),
 					'UTF-8'
 				)
 			);
 		}
 
-		static exists(moduleName, dataName) {
+		static async exists(moduleName, dataName) {
 			const directory = path.resolve(dataDirectory, moduleName);
-			if (!fs.existsSync(directory)) {
-				fs.mkdirSync(directory);
-			}
+			await makeDirectoryIfNotExists(directory);
 
-			return fs.existsSync(path.resolve(directory, dataName + '.json'));
+			return await existsAsync(path.resolve(directory, dataName + '.json'));
 		}
 	});
 };

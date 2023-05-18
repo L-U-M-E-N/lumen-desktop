@@ -1,7 +1,7 @@
 export default class ConfigManager {
-	static init() {
-		if(AppDataManager.exists('lumen_desktop', 'modules_config')) {
-			ConfigManager.configurations = AppDataManager.loadObject('lumen_desktop', 'modules_config');
+	static async init() {
+		if(await AppDataManager.exists('lumen_desktop', 'modules_config')) {
+			ConfigManager.configurations = await AppDataManager.loadObject('lumen_desktop', 'modules_config');
 		} else {
 			ConfigManager.configurations = {};
 		}
@@ -33,12 +33,12 @@ export default class ConfigManager {
 		return ConfigManager.configurations[moduleName][item];
 	}
 
-	static set(moduleName, item, value) {
+	static async set(moduleName, item, value) {
 		ConfigManager.configurations[moduleName][item] = value;
 
 		// TODO: check type
 
-		AppDataManager.saveObject('lumen_desktop', 'modules_config', ConfigManager.configurations);
+		await AppDataManager.saveObject('lumen_desktop', 'modules_config', ConfigManager.configurations);
 	}
 
 	static getMetadata(moduleName) {

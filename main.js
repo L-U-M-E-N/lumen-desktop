@@ -27,11 +27,11 @@ export const load = async(electron) => {
 	global.tmpDir = path.resolve(app.getAppPath(), 'tmp');
 	global.viewsPath = path.resolve(app.getAppPath(), 'views');
 
-	global.AppDataManager = AppDataManagerFactory(app.getAppPath());
+	global.AppDataManager = await AppDataManagerFactory(app.getAppPath());
 	global.ConfigManager = ConfigManager;
 	global.fileScanner = fileScanner;
 
-	ConfigManager.init();
+	await ConfigManager.init();
 
 	// Build html file
 	await loadModules();
@@ -51,15 +51,15 @@ export const load = async(electron) => {
 		return app.getAppPath();
 	});
 
-	ipcMain.handle('AppDataManager-saveObject', (e, moduleName, dataName, objectData) => {
-		return AppDataManager.saveObject(moduleName, dataName, objectData);
+	ipcMain.handle('AppDataManager-saveObject', async(e, moduleName, dataName, objectData) => {
+		return await AppDataManager.saveObject(moduleName, dataName, objectData);
 	});
-	ipcMain.handle('AppDataManager-loadObject', (e, moduleName, dataName,) => {
-		return AppDataManager.loadObject(moduleName, dataName);
+	ipcMain.handle('AppDataManager-loadObject', async(e, moduleName, dataName,) => {
+		return await AppDataManager.loadObject(moduleName, dataName);
 	});
-	ipcMain.handle('AppDataManager-exists', (e, moduleName, dataName) => {
+	ipcMain.handle('AppDataManager-exists', async(e, moduleName, dataName) => {
 		console.log(moduleName, dataName);
-		return AppDataManager.exists(moduleName, dataName);
+		return await AppDataManager.exists(moduleName, dataName);
 	});
 
 	ipcMain.handle('ConfigManager-get', (e, moduleName, item) => {

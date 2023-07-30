@@ -87,14 +87,17 @@ export default class ModuleDownloader {
 			moduleObj.client = moduleData.desktop.module || moduleData.desktop.window;
 			moduleObj.server = moduleData.server;
 		}
-		modules.push({
-			name: moduleData.name,
-			version: chosenTag,
-			client_download_url: moduleData.download_url,
-			server_download_url: moduleData.download_url,
-			client: moduleData.desktop.module || moduleData.desktop.window,
-			server: moduleData.server,
-		});
+
+		if(!updated) {
+			modules.push({
+				name: moduleData.name,
+				version: chosenTag,
+				client_download_url: moduleData.download_url,
+				server_download_url: moduleData.download_url,
+				client: moduleData.desktop.module || moduleData.desktop.window,
+				server: moduleData.server,
+			});
+		}
 
 		await AppDataManager.saveObject('lumen_desktop', 'modules_config', {
 			...lumenConfig,

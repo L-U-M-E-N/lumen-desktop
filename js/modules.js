@@ -69,11 +69,14 @@ async function onLoad() {
 			};
 		}
 
+		let chosenTag = moduleData.versions[0].tag_name;
 		const selectDOM = createSelect(`${moduleName}-available-versions`, versions);
-		availableVersions.appendChild(selectDOM);
-		// TODO: onchange
+		selectDOM.addEventListener('change', e => {
+			chosenTag = e.target.value;
+		});
 
-		const chosenTag = moduleData.versions[0].tag_name;
+		availableVersions.appendChild(selectDOM);
+		
 		if(chosenTag !== installedVersion) {
 			const input = document.createElement('input');
 			input.setAttribute('type', 'button');

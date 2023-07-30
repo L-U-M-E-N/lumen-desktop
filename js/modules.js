@@ -31,8 +31,9 @@ async function onLoad() {
 	console.log(localModulesList);
 	console.log(totalModulesList);
 
-	for(const moduleName in totalModulesList) {
-		const moduleData = totalModulesList[moduleName];
+	for(const key in totalModulesList) {
+		const moduleData = totalModulesList[key];
+		const moduleName = moduleData.moduleJson.name;
 		const localModule = localModulesList.find(x => x.name === moduleName)
 
 		const moduleDiv = document.createElement('div');
@@ -86,6 +87,7 @@ async function onLoad() {
 			input.addEventListener('click', async() => {
 				moduleData.moduleJson.download_url = moduleData.versions.find(x => x.tag_name === chosenTag).zipball_url;
 				await ipcRenderer.invoke('app-install-module', moduleData.moduleJson, chosenTag);
+				window.location.reload();
 			});
 
 			availableVersions.appendChild(input);
@@ -102,6 +104,19 @@ async function onLoad() {
 		const serverDOM = document.createElement('p');
 		serverDOM.innerText = (moduleData.moduleJson.server ? '✅' : '❌') + ' Server module';
 		moduleDiv.appendChild(serverDOM);
+
+		// Uninstall
+		if(installedVersion !== 'None') {
+			const input = document.createElement('input');
+			input.setAttribute('type', 'button');
+			input.value = 'Uninstall';
+			input.addEventListener('click', async() => {
+				await ipcRenderer.invoke('app-uninstall-module', moduleName);
+				window.location.reload();
+			});
+
+			moduleDiv.appendChild(input);
+		}
 
 		// Append module div
 		sectionHTML.appendChild(moduleDiv);

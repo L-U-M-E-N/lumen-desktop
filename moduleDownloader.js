@@ -102,5 +102,28 @@ export default class ModuleDownloader {
 		});
 	}
 
-	// TODO: uninstall
+	static async uninstall(moduleName) {
+		const directoryList = await readdir('./modules/');
+
+		// Module already exists
+		const modulePath = path.join('./modules/', moduleName);
+		const moduleConfigPath = path.join(modulePath, 'module.json');
+
+		if(directoryList.includes(moduleName)) {
+			await rm(modulePath, { recursive: true, force: true });
+		}
+
+		// Set Config
+		let modules = [];
+		let lumenConfig = {};
+		if(await AppDataManager.exists('lumen_desktop', 'modules_config')) {
+			lumenConfig = await AppDataManager.loadObject('lumen_desktop', 'modules_config');
+			modules = lumenConfig.modules || [];
+		}
+
+		await AppDataManager.saveObject('lumen_desktop', 'modules_config', {
+			...lumenConfig,
+			modules: modules.filter(x => x.name !== moduleName)
+		});
+	}
 }

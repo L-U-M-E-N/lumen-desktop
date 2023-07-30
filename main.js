@@ -86,4 +86,7 @@ export const load = async(electron) => {
 	ipcMain.handle('app-install-module', async(e, moduleData, chosenTag) => {
 		await ModuleDownloader.install(moduleData, chosenTag);
 	});
+	ipcMain.handle('app-uninstall-module', async(e, moduleName) => {
+		await ModuleDownloader.uninstall(moduleName);
+	});
 };

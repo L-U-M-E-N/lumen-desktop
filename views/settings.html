@@ -1,104 +1,11 @@
+<div id="modules-list">
+	
+</div>
+
 <div id="settings-list">
 	
 </div>
 
-<script type="text/javascript">
-	function createInputLabel(name) {
-		const elementDOM = document.createElement('label');
-		elementDOM.setAttribute('for', name);
-		elementDOM.innerText = name[0].toUpperCase() + name.slice(1, name.length);
-
-		return elementDOM;
-	}
-
-	function createTextInput(id, name, value) {
-		const elementDOM = document.createElement('input');
-		elementDOM.id = id;
-		elementDOM.setAttribute('name', name);
-		elementDOM.setAttribute('placeholder', name);
-		elementDOM.setAttribute('type', 'text');
-		elementDOM.value = value;
-
-		return elementDOM;
-	}
-
-	function createTextareaInput(id, name, value) {
-		const elementDOM = document.createElement('textarea');
-		elementDOM.id = id;
-		elementDOM.setAttribute('name', name);
-		elementDOM.setAttribute('placeholder', name);
-		elementDOM.value = value;
-
-		setTimeout(() => {
-			elementDOM.style.height = '5px';
-			elementDOM.style.height = (elementDOM.scrollHeight)+'px';
-		}, 250);
-
-		return elementDOM;
-	}
-
-	async function onLoad() {
-		const sectionHTML = document.getElementById('settings-list');
-
-		const modulesList = await getModulesList();
-
-		for(const moduleName of modulesList) {
-			const moduleNameHTML = document.createElement('h2');
-			moduleNameHTML.innerText = moduleName;
-			sectionHTML.appendChild(moduleNameHTML);
-
-			const config = await ConfigManager.getMetadata(moduleName);
-			for(const configElementName in config) {
-				sectionHTML.appendChild(createInputLabel(configElementName));
-
-				if(config[configElementName] === 'string') {
-					sectionHTML.appendChild(
-						createTextInput(
-							`${moduleName}-${configElementName}`,
-							configElementName,
-							await ConfigManager.get(moduleName, configElementName)
-						)
-					);
-				} else {
-					sectionHTML.appendChild(
-						createTextareaInput(
-							`${moduleName}-${configElementName}`,
-							configElementName,
-							JSON.stringify(
-								await ConfigManager.get(moduleName, configElementName),
-								null,
-								4
-							)
-						)
-					);
-				}
-			}
-		}
-
-
-		const button = document.createElement('input');
-		button.setAttribute('type', 'button');
-		button.addEventListener('click', async() => {
-			for(const moduleName of modulesList) {
-				const config = await ConfigManager.getMetadata(moduleName);
-				for(const configElementName in config) {
-					const value = document.getElementById(`${moduleName}-${configElementName}`).value;
-
-					ConfigManager.set(moduleName, configElementName, value);
-
-					if(config[configElementName] === 'string') {
-						ConfigManager.set(moduleName, configElementName, value);
-					} else {
-						ConfigManager.set(moduleName, configElementName, JSON.parse(value));
-						// TODO: show if error on parse
-					}
-				}
-			}
-		});
-		button.value = 'Valider';
-
-		sectionHTML.appendChild(button);
-	}
-
-	window.addEventListener('load', onLoad);
-</script>
+<script type="text/javascript" src="../js/createHTMLElement.js"></script>
+<script type="text/javascript" src="../js/settings.js"></script>
+<script type="text/javascript" src="../js/modules.js"></script>

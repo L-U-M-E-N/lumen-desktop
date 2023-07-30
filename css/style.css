@@ -90,30 +90,52 @@ body {
 	-webkit-app-region: no-drag;
 }
 
-/** Settings **/
+/**
+ * Modules
+ */
+#modules-list {
+	padding: 0.5rem;
+}
+#modules-list h1 {
+	text-align: center;
+}
+#modules-list .modules-list-element {
+	display: inline-block;
+	padding: 1rem;
+	width: 25%;
+}
+#modules-list .modules-list-element input[type="button"] {
+	margin-left: 0.5rem;
+}
+#modules-list h2 {
+	padding-top: 0;
+}
+
+/**
+ * Settings
+ */
 #settings-list {
     overflow: auto;
     max-height: 100vh;
 	padding: 1.5rem;
 }
-
+#settings-list h1 {
+	text-align: center;
+}
 #settings-list label {
     width: 120px;
     display: inline-block;
     padding-left: 1rem;
     vertical-align: top;
 }
-
 #settings-list input[type="text"] {
 	display: inline-block;
 	padding-right: 5rem;
 }
-
 #settings-list input[type="button"] {
 	display: block;
 	margin-top: 1rem;
 }
-
 #settings-list textarea {
 	width: 75vw;
 }

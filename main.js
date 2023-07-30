@@ -7,6 +7,7 @@ import AppDataManagerFactory from './js/AppDataManager.js';
 import ConfigManager from './js/ConfigManager.js';
 import fileScanner from './fileScanner.js';
 import loadModules from './loadModules.js';
+import ModuleDownloader from './moduleDownloader.js';
 
 import './windowManager.js';
 
@@ -42,7 +43,13 @@ export const load = async(electron) => {
 	app.on('ready', console.log);
 
 	ipcMain.on('app-quit', () => {
+		// TODO: save data
 		app.quit();
+	});
+	ipcMain.on('app-restart', () => {
+		// TODO: save data
+		app.relaunch();
+		app.exit();
 	});
 	ipcMain.on('toggleDevTools', () => {
 		BrowserWindow.getFocusedWindow().toggleDevTools();
@@ -74,5 +81,9 @@ export const load = async(electron) => {
 
 	ipcMain.handle('getModulesList', (e) => {
 		return Object.keys(modulesMetaData);
+	});
+
+	ipcMain.handle('app-install-module', async(e, moduleData, chosenTag) => {
+		await ModuleDownloader.install(moduleData, chosenTag);
 	});
 };

@@ -16,7 +16,7 @@ async function onLoad() {
 	sectionHTML.appendChild(topModulesTitle);
 
 	// Get Data
-	const localModulesList = await getModulesList();
+	const localModulesList = (await AppDataManager.loadObject('lumen_desktop', 'modules_config')).modules;
 	const totalModulesList = await getAllModules();
 
 	// No data
@@ -33,6 +33,7 @@ async function onLoad() {
 
 	for(const moduleName in totalModulesList) {
 		const moduleData = totalModulesList[moduleName];
+		const localModule = localModulesList.find(x => x.name === moduleName)
 
 		const moduleDiv = document.createElement('div');
 		moduleDiv.classList.add('modules-list-element');
@@ -43,7 +44,7 @@ async function onLoad() {
 		moduleDiv.appendChild(titleElt);
 
 		// Installed version
-		const installedVersion = (typeof localModulesList[moduleName] === 'undefined' ? 'None' : localModulesList[moduleName].version);
+		const installedVersion = (typeof localModule === 'undefined' ? 'None' : localModule.version);
 		const installedVersionDOM = document.createElement('span');
 		installedVersionDOM.innerText = 'Installed version: ' + installedVersion;
 		moduleDiv.appendChild(installedVersionDOM);
@@ -69,6 +70,7 @@ async function onLoad() {
 
 		const selectDOM = createSelect(`${moduleName}-available-versions`, versions);
 		availableVersions.appendChild(selectDOM);
+		// TODO: onchange
 
 		const chosenTag = moduleData.versions[0].tag_name;
 		if(chosenTag !== installedVersion) {

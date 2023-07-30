@@ -31,12 +31,6 @@ export default class ModuleDownloader {
 	static async install(moduleData, chosenTag) {
 		let directoryList = await readdir('./modules/');
 
-		console.log(moduleData);
-
-		if(!moduleData.desktop.module && !moduleData.desktop.window) {
-			return;
-		}
-
 		// Module already exists
 		const modulePath = path.join('./modules/', moduleData.name);
 		const moduleConfigPath = path.join(modulePath, 'module.json');
@@ -51,29 +45,61 @@ export default class ModuleDownloader {
 			await rm(modulePath, { recursive: true, force: true });
 		}
 
-		// Download module
-		const zipPath = path.join('./modules/', moduleData.name + '.zip');
-		await (new Promise((resolve, reject) => { 
-			const file = createWriteStream(zipPath);
-			const downloadURL = moduleData.download_url.replace('%VERSION%', chosenTag);
-			ModuleDownloader.download(file, downloadURL, resolve);
-		}));
+		if(moduleData.desktop.module || moduleData.desktop.window) {
+			// Download module
+			const zipPath = path.join('./modules/', moduleData.name + '.zip');
+			await (new Promise((resolve, reject) => { 
+				const file = createWriteStream(zipPath);
+				ModuleDownloader.download(file, moduleData.download_url, resolve);
+			}));
 
-		// Extract module
-		execSync(`unzip ${zipPath} -d ${modulePath}`);
-		execSync(`mv ${modulePath.replace('\\', '/')}/*/*  ${modulePath}`);
+			// Extract module
+			execSync(`unzip ${zipPath} -d ${modulePath}`);
+			execSync(`mv ${modulePath.replace('\\', '/')}/*/*  ${modulePath}`);
 
-		await rm(zipPath);
+			await rm(zipPath);
 
-		// Set version
-		moduleConfig = JSON.parse(await readFile(moduleConfigPath, 'utf-8'));
-		moduleConfig.version = chosenTag;
+			// Set version
+			moduleConfig = JSON.parse(await readFile(moduleConfigPath, 'utf-8'));
+			moduleConfig.version = chosenTag;
+			await writeFile(moduleConfigPath, JSON.stringify(moduleConfig, null, 2));
+		}
 
-		await writeFile(moduleConfigPath, JSON.stringify(moduleConfig, null, 2));
+		// Set Config
+		let modules = [];
+		let lumenConfig = {};
+		if(await AppDataManager.exists('lumen_desktop', 'modules_config')) {
+			lumenConfig = await AppDataManager.loadObject('lumen_desktop', 'modules_config');
+			modules = lumenConfig.modules || [];
+		}
 
-		// TODO: execute npm install if package.json exists and npm run config/build/electron-build if exists in package.json
+		let updated = false;
+		for(const moduleObj of modules) {
+			if(moduleObj.name !== moduleData.name) {
+				continue;
+			}
 
-		// TODO: set config
+			updated = true;
+
+			moduleObj.version = chosenTag;
+			moduleObj.client_download_url = moduleData.download_url;
+			moduleObj.server_download_url = moduleData.download_url;
+			moduleObj.client = moduleData.desktop.module || moduleData.desktop.window;
+			moduleObj.server = moduleData.server;
+		}
+		modules.push({
+			name: moduleData.name,
+			version: chosenTag,
+			client_download_url: moduleData.download_url,
+			server_download_url: moduleData.download_url,
+			client: moduleData.desktop.module || moduleData.desktop.window,
+			server: moduleData.server,
+		});
+
+		await AppDataManager.saveObject('lumen_desktop', 'modules_config', {
+			...lumenConfig,
+			modules
+		});
 	}
 
 	// TODO: uninstall

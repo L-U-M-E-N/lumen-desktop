@@ -13,5 +13,8 @@
 		"electron-packager": "^17.1.1"
 	},
 	"author": "Axel \"Elanis\" Soupé",
-	"license": "MIT"
+	"license": "MIT",
+	"dependencies": {
+		"adm-zip": "^0.5.10"
+	}
 }

@@ -4,6 +4,8 @@ import { createWriteStream } from 'fs';
 import { readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'path';
 
+import AdmZip from 'adm-zip';
+
 export default class ModuleDownloader {
 	static download(file, url, resolve) {
 		const options = {
@@ -54,7 +56,8 @@ export default class ModuleDownloader {
 			}));
 
 			// Extract module
-			execSync(`unzip ${zipPath} -d ${modulePath}`);
+			const zip = new AdmZip(zipPath);
+			zip.extractAllTo(/* targetPath*/ modulePath, /*overwrite*/ true);
 			execSync(`mv ${modulePath.replace('\\', '/')}/*/*  ${modulePath}`);
 
 			await rm(zipPath);

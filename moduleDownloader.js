@@ -31,10 +31,10 @@ export default class ModuleDownloader {
 	}
 
 	static async install(moduleData, chosenTag) {
-		let directoryList = await readdir('./resources/app/modules/');
+		let directoryList = await readdir(global.modulesPath);
 
 		// Module already exists
-		const modulePath = path.join('./resources/app/modules/', moduleData.name);
+		const modulePath = path.join(global.modulesPath, moduleData.name);
 		const moduleConfigPath = path.join(modulePath, 'module.json');
 		let moduleConfig = {};
 		if(directoryList.includes(moduleData.name)) {
@@ -49,7 +49,7 @@ export default class ModuleDownloader {
 
 		if(moduleData.desktop.module || moduleData.desktop.window) {
 			// Download module
-			const zipPath = path.join('./resources/app/modules/', moduleData.name + '.zip');
+			const zipPath = path.join(global.modulesPath, moduleData.name + '.zip');
 			await (new Promise((resolve, reject) => { 
 				const file = createWriteStream(zipPath);
 				ModuleDownloader.download(file, moduleData.download_url, resolve);
@@ -109,10 +109,10 @@ export default class ModuleDownloader {
 	}
 
 	static async uninstall(moduleName) {
-		const directoryList = await readdir('./resources/app/modules/');
+		const directoryList = await readdir(global.modulesPath);
 
 		// Module already exists
-		const modulePath = path.join('./resources/app/modules/', moduleName);
+		const modulePath = path.join(global.modulesPath, moduleName);
 		const moduleConfigPath = path.join(modulePath, 'module.json');
 
 		if(directoryList.includes(moduleName)) {

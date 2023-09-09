@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "electron .",
+		"start-debug": "electron --inspect=5858 .",
 		"build": "electron-packager \".\" \"Project L.U.M.E.N.\" --ignore=data/ -–asar --overwrite --platform=win32 --arch=x64 --icon=\"img/icon.png\" --out=\"build/\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},

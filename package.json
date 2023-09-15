@@ -10,7 +10,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"devDependencies": {
-		"electron": "^25.3.0",
+		"electron": "^25.5.0",
 		"electron-packager": "^17.1.1"
 	},
 	"author": "Axel \"Elanis\" Soupé",
